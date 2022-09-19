@@ -11,7 +11,7 @@ fetch("http://localhost:3000/api/products")
     productDescription.textContent = response[0].description;
     for (let i = 0; i < response.length; i++) {
       document.querySelector("#items").innerHTML +=
-        "<a href='./product.html?id=42'>" +
+        "<a href='./product.html?id=107fb5b75607497b96722bda5b504926'>" +
         "<article>" +
         "<img src='../../back/images/kanap0" +
         (i + 1) +
@@ -34,7 +34,8 @@ fetch("http://localhost:3000/api/products")
     }
   });
 
-var str = "http://127.0.0.1:5500/front/html/product.html?id=42";
+var str =
+  "http://127.0.0.1:5500/front/html/product.html?id=107fb5b75607497b96722bda5b504926";
 var url = new URL(str);
 var productId = url.searchParams.get("id");
 console.log(productId);
