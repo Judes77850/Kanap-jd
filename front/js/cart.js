@@ -29,7 +29,7 @@ document.querySelector(
 ).innerHTML += `<img src="${data.imageUrl}"/>`;
 
 document.querySelector(".deleteItem").addEventListener("click", () => {
-  alert("Suppression de votre panier");
+  confirm("Êtes vous sur de vouloir supprimer votre panier ?");
   localStorage.removeItem("data");
   location.reload();
 });
