@@ -1,32 +1,54 @@
-const product = window.location.search;
+const id = getId();
 
-console.log(product);
+fetch("http://localhost:3000/api/products/" + id)
+  .then((res) => res.json())
+  .then((product) => {
+    document.querySelector("#title").innerHTML += product.name;
+    document.querySelector("#price").innerHTML += product.price;
+    document.querySelector("#description").innerHTML += product.description;
+    for (i = 0; i < product.colors.length; i++)
+      document.querySelector("#colors").innerHTML +=
+        "<option>" + product.colors[i] + "</option>";
+    document
+      .querySelector(".item__img img")
+      .setAttribute("src", product.imageUrl);
+    document.querySelector("#addToCart").addEventListener("click", () => {
+      const color = document.querySelector("#colors").value;
+      const qty = document.querySelector("#quantity").value;
+      if (qty < 1 || qty > 100) {
+        alert("Merci de selectionner une quantité valide");
+        return;
+      }
+      if (color.length === 0) {
+        alert("Veuillez selectionner une couleur");
+        return;
+      }
+      if (!product.colors.includes(color)) {
+        alert("ouille");
+        return;
+      }
 
-var str = "http://127.0.0.1:5500/front/html/product.html?id=";
-var url = new URL(str);
-var productId = url.searchParams.get("id");
-console.log(productId);
+      const products = [];
+      let items = {
+        name: product.name,
+        id: product._id,
+        color: color,
+        qty: qty,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      };
 
-// if (productId === "?id=107fb5b75607497b96722bda5b504926") {
-//   result = product[0];
-// }
-// if (productId === "415b7cacb65d43b2b5c1ff70f3393ad1") {
-//   result = product[1];
-// }
-// if (productId === "055743915a544fde83cfdfc904935ee7") {
-//   result = product[2];
-// }
-// if (productId === "a557292fe5814ea2b15c6ef4bd73ed83") {
-//   result = product[3];
-// }
-// if (productId === "8906dfda133f4c20a9d0e34f18adcf06") {
-//   result = product[4];
-// }
-// if (productId === "77711f0e466b4ddf953f677d30b0efc9") {
-//   result = product[5];
-// }
-// if (productId === "034707184e8e4eefb46400b5a3774b5f") {
-//   result = product[6];
-// } else {
-//   console.log("error");
-// }
+      let data = JSON.stringify(items);
+      console.log(data);
+      localStorage.data = data;
+      alert(product.name + " " + color + " a été ajouté a votre panier ");
+    });
+  });
+
+function getId() {
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+
+  return (value = params.id);
+}
