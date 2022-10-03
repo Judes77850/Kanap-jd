@@ -34,10 +34,12 @@ function listenForCartAddition(product) {
       alert("Merci de selectionner une quantité valide");
       return;
     }
+
     if (color.length === 0) {
       alert("Veuillez selectionner une couleur");
       return;
     }
+
     if (!product.colors.includes(color)) {
       alert("ouille");
       return;
@@ -54,19 +56,21 @@ function listenForCartAddition(product) {
       };
       console.log(item);
       products.push(item);
-      store("products", products);
+      localStorage.setItem("products", JSON.stringify(products));
+      //store("products", products);
       alert(product.name + " " + color + " a été ajouté a votre panier ");
       return;
     }
     const storage = get("products");
-    const doesProductExists = !storage.find(
+    const doesProductExists = !!storage.find(
       (item) => item.id === product._id && color == item.color
     );
+    console.log(doesProductExists);
     if (doesProductExists) {
       const existingProduct = storage.find(
         (item) => item.id === product._id && color == item.color
       );
-      existingProduct.qty += Number(existingProduct.qty) + Number(qty);
+      existingProduct.qty = Number(existingProduct.qty) + Number(qty);
       store("products", storage);
       alert(product.name + " " + color + " a été ajouté a votre panier 2");
       return;
@@ -78,7 +82,6 @@ function listenForCartAddition(product) {
       qty: Number(qty),
     };
 
-    console.log(item);
     storage.push(item);
     store("products", storage);
     alert(product.name + " " + color + " a été ajouté a votre panier 3");

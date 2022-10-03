@@ -1,57 +1,81 @@
-const productsInCart = get("products");
-
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
-  .then((products) => {
-    console.log(AllProducts);
+  .then((allProducts) => {
+    const products = buildFinalList(allProducts);
+    display(products);
+    total(products);
+    console.log(products);
   });
 
-// let storage = JSON.parse(localStorage.data);
-// console.log(storage.item);
-// let qty = product.qty;
-// let price = product.price;
-// let name = product.name;
-// let color = product.color;
+function total(products) {
+  let totalQty = 0;
+  let totalPrice = 0;
+  for (let i = 0; i < products.length; i++) {
+    let prodQty = products[i].qty;
+    let prodPrice = products[i].price;
+    totalQty += products[i].qty;
+    totalPrice += prodQty * prodPrice;
+    document.querySelector("#totalQuantity").innerHTML = totalQty;
+    document.querySelector("#totalPrice").innerHTML = totalPrice;
+    const selectElement = document.querySelector(
+      ".cart__item__content__settings__quantity"
+    );
+    selectElement.addEventListener("change", (event) => {
+      document.querySelector("#totalQuantity").textContent = `${totalQty}`;
+      prodQty = Number(event.target.value);
+      //location.reload();
+      console.log(prodQty);
+      //totalQty = prodQty + difQty;
+      document.querySelector("#totalPrice").innerHTML = prodPrice * prodQty;
+    });
+  }
+}
 
-// document.querySelector(
-//   ".cart__item__content__description"
-// ).innerHTML += ` <h2>${name}</h2>
-// <p>${color}</p>
-// <p>${price} €</p>
-// `;
+function display(products) {
+  let html = "";
+  products.forEach((product) => {
+    html += displayProduct(product);
+  });
+  document.querySelector("#cart__items").innerHTML = html;
+}
 
-// document.querySelector(
-//   ".cart__item__content__settings__quantity"
-// ).innerHTML += `<p>Qté :</p>
-// <input
-//   type="number"
-//   class="itemQuantity"
-//   name="itemQuantity"
-//   min="1"
-//   max="100"
-//   value= ${qty}
-//   />`;
+function displayProduct(product) {
+  return `
+          <article class="cart__item" data-id="${product._id}" data-color="${
+    product.color
+  }">
+            <div class="cart__item__img">
+              <img src="${product.imageUrl}" />
+            </div>
+            <div class="cart__item__content">
+              <div class="cart__item__content__description"><h2>${
+                product.name
+              }</h2>
+              <p>${product.color}</p>
+              <p>${product.price * product.qty} €</p></div>
+              <div class="cart__item__content__settings">
+                <div class="cart__item__content__settings__quantity">
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value= ${
+                  product.qty
+                } />
+                </div>
+                <div class="cart__item__content__settings__delete">
+                  <p class="deleteItem">Supprimer</p>
+                </div>
+              </div>
+            </div>
+          </article>`;
+}
 
-// document.querySelector("#totalQuantity").textContent = `
-//   ${qty}`;
-// document.querySelector("#totalPrice").textContent = `${price * qty}`;
-// const selectElement = document.querySelector(
-//   ".cart__item__content__settings__quantity"
-// );
-// selectElement.addEventListener("change", (event) => {
-//   qty = event.target.value;
-//   console.log(qty);
-//   document.querySelector("#totalQuantity").textContent = `
-//   ${qty}`;
-//   document.querySelector("#totalPrice").textContent = `${price * qty}`;
-// });
+function buildFinalList(allProducts) {
+  const productsInCart = get("products");
+  const list = [];
 
-// document.querySelector(
-//   ".cart__item__img"
-// ).innerHTML += `<img src="${data.imageUrl}"/>`;
-
-// document.querySelector(".deleteItem").addEventListener("click", () => {
-//   confirm("Êtes vous sur de vouloir supprimer votre panier ?");
-//   localStorage.removeItem("data");
-//   location.reload();
-// });
+  productsInCart.forEach((item) => {
+    const productComplete = allProducts.find((a) => a._id === item.id);
+    productComplete.qty = item.qty;
+    productComplete.color = item.color;
+    list.push(productComplete);
+  });
+  return list;
+}
