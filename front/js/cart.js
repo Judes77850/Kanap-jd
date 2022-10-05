@@ -4,30 +4,57 @@ fetch("http://localhost:3000/api/products")
     const products = buildFinalList(allProducts);
     display(products);
     total(products);
-    console.log(products);
+    listenForProductQtyChange();
+    listenForProductDelete();
   });
+
+function listenForProductQtyChange() {
+  document.querySelectorAll(".itemQuantity").forEach((input) => {
+    input.addEventListener("change", (event) => {
+      const newQty = event.target.value;
+      const id = event.target.closest(".cart__item").dataset.id;
+      const color = event.target.closest(".cart__item").dataset.color;
+      console.log(newQty, id, color);
+      const storage = get("products");
+      const product = storage.find((a) => a.id === id && a.color === color);
+      product.qty = Number(newQty);
+      store("products", storage);
+      location.reload();
+    });
+  });
+}
+
+function listenForProductDelete() {
+  document.querySelectorAll(".deleteItem").forEach((input) => {
+    input.addEventListener("click", (event) => {
+      const id = event.target.closest(".cart__item").dataset.id;
+      const color = event.target.closest(".cart__item").dataset.color;
+      const storage = get("products");
+      const index = storage.findIndex((a) => a.id === id && a.color === color);
+      storage.splice(index, 1);
+      store("products", storage);
+      location.reload();
+    });
+  });
+}
 
 function total(products) {
   let totalQty = 0;
   let totalPrice = 0;
   for (let i = 0; i < products.length; i++) {
     let prodQty = products[i].qty;
+    console.log(prodQty);
+
     let prodPrice = products[i].price;
     totalQty += products[i].qty;
-    totalPrice += prodQty * prodPrice;
+    totalPrice = totalPrice + prodQty * prodPrice;
+    console.log(totalPrice);
     document.querySelector("#totalQuantity").innerHTML = totalQty;
-    document.querySelector("#totalPrice").innerHTML = totalPrice;
+    document.querySelector("#totalPrice").innerHTML = money(totalPrice);
     const selectElement = document.querySelector(
       ".cart__item__content__settings__quantity"
     );
-    selectElement.addEventListener("change", (event) => {
-      document.querySelector("#totalQuantity").textContent = `${totalQty}`;
-      prodQty = Number(event.target.value);
-      //location.reload();
-      console.log(prodQty);
-      //totalQty = prodQty + difQty;
-      document.querySelector("#totalPrice").innerHTML = prodPrice * prodQty;
-    });
+    //   selectElement
   }
 }
 
@@ -52,7 +79,7 @@ function displayProduct(product) {
                 product.name
               }</h2>
               <p>${product.color}</p>
-              <p>${product.price * product.qty} €</p></div>
+              <p>${money(product.price * product.qty)}</p></div>
               <div class="cart__item__content__settings">
                 <div class="cart__item__content__settings__quantity">
                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value= ${
@@ -73,9 +100,10 @@ function buildFinalList(allProducts) {
 
   productsInCart.forEach((item) => {
     const productComplete = allProducts.find((a) => a._id === item.id);
-    productComplete.qty = item.qty;
-    productComplete.color = item.color;
-    list.push(productComplete);
+    const product = { ...productComplete };
+    product.qty = item.qty;
+    product.color = item.color;
+    list.push(product);
   });
   return list;
 }

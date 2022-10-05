@@ -17,7 +17,7 @@ function getId() {
 
 function displayProductDetails(product) {
   document.querySelector("#title").innerHTML += product.name;
-  document.querySelector("#price").innerHTML += product.price;
+  document.querySelector("#price").innerHTML += money(product.price);
   document.querySelector("#description").innerHTML += product.description;
   for (i = 0; i < product.colors.length; i++)
     document.querySelector("#colors").innerHTML +=
@@ -58,7 +58,7 @@ function listenForCartAddition(product) {
       products.push(item);
       localStorage.setItem("products", JSON.stringify(products));
       //store("products", products);
-      alert(product.name + " " + color + " a été ajouté a votre panier ");
+      alert(product.name + " " + color + " a été ajouté a votre panier");
       return;
     }
     const storage = get("products");
@@ -72,7 +72,7 @@ function listenForCartAddition(product) {
       );
       existingProduct.qty = Number(existingProduct.qty) + Number(qty);
       store("products", storage);
-      alert(product.name + " " + color + " a été ajouté a votre panier 2");
+      alert(product.name + " " + color + " a été ajouté a votre panier");
       return;
     }
 
@@ -84,6 +84,6 @@ function listenForCartAddition(product) {
 
     storage.push(item);
     store("products", storage);
-    alert(product.name + " " + color + " a été ajouté a votre panier 3");
+    alert(product.name + " " + color + " a été ajouté a votre panier");
   });
 }
