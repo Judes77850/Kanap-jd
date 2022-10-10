@@ -26,6 +26,7 @@ function displayProductDetails(product) {
     .querySelector(".item__img img")
     .setAttribute("src", product.imageUrl);
 }
+
 function listenForCartAddition(product) {
   document.querySelector("#addToCart").addEventListener("click", () => {
     const color = document.querySelector("#colors").value;

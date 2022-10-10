@@ -6,6 +6,7 @@ fetch("http://localhost:3000/api/products")
     total(products);
     listenForProductQtyChange();
     listenForProductDelete();
+    customerInfo();
   });
 
 function listenForProductQtyChange() {
@@ -43,12 +44,9 @@ function total(products) {
   let totalPrice = 0;
   for (let i = 0; i < products.length; i++) {
     let prodQty = products[i].qty;
-    console.log(prodQty);
-
     let prodPrice = products[i].price;
     totalQty += products[i].qty;
     totalPrice = totalPrice + prodQty * prodPrice;
-    console.log(totalPrice);
     document.querySelector("#totalQuantity").innerHTML = totalQty;
     document.querySelector("#totalPrice").innerHTML = money(totalPrice);
     const selectElement = document.querySelector(
@@ -107,3 +105,58 @@ function buildFinalList(allProducts) {
   });
   return list;
 }
+
+// envoi infos client
+function customerInfo(contact) {
+  document.querySelector("#order").addEventListener("click", () => {
+    const lastName = document.querySelector("#lastName").value;
+    const firstName = document.querySelector("#firstName").value;
+    const address = document.querySelector("#address").value;
+    const city = document.querySelector("#city").value;
+    const email = document.querySelector("#email").value;
+
+    const contact = {
+      firstName,
+      lastName,
+      address,
+      city,
+      email,
+    };
+
+    alert(contact.firstName + ", votre commande est bien prise en compte");
+    localStorage.setItem("contact", JSON.stringify(contact));
+    const products = [];
+    const prod = JSON.parse(localStorage.products);
+    console.log(prod.length);
+    if (firstName && lastName && address && city && email) {
+      for (i = 0; i < prod.length; i++) {
+        console.log(prod[i].id);
+        products.push(prod[i].id);
+      }
+      console.log(products);
+      return products;
+    }
+    const toSend = {
+      contact,
+      products,
+    };
+
+    fetch("http://localhost:3000/api/products", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(toSend),
+    })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+  });
+}
+// function redirection() {
+// if (document.location.href = "../html/confirmation.html"){
+
+// };
