@@ -1,7 +1,4 @@
-// function affNumCmd() {
-//   let cmdId = document.body.getElementById("orderId");
-//   console.log(cmdId);
-//   cmdId.innerHTML("");
-// }
+const orderId = getFromUrl("order");
+document.getElementById("orderId").innerText = orderId;
 
-// affNumCmd();
+localStorage.clear();

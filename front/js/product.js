@@ -1,4 +1,4 @@
-const id = getId();
+const id = getFromUrl("id");
 
 fetch("http://localhost:3000/api/products/" + id)
   .then((res) => res.json())

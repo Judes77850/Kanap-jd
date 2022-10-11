@@ -24,3 +24,10 @@ function money(value) {
 
   return formatter.format(value);
 }
+
+function getFromUrl(key) {
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  return (value = params[key]);
+}
