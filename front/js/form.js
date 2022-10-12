@@ -1,6 +1,7 @@
 let myForm = document.querySelector(".cart__order__form");
+//let prodInCart = JSON.stringify.localStorage;
+console.log(localStorage.products.length);
 
-// Prenom
 myForm.addEventListener("submit", function (e) {
   e.preventDefault();
   let myFirstName = document.getElementById("firstName");
@@ -9,10 +10,14 @@ myForm.addEventListener("submit", function (e) {
   let myCity = document.getElementById("city");
   let myEmail = document.getElementById("email");
   const regexes = {
-    myFirstName: /^[a-zA-Z-\s]+$/,
-    myLastName: /^[a-zA-Z-\s]+$/,
-    myAddress: /^[a-zA-Z\-0-9\s]+$/,
-    myCity: /^[a-zA-Z-\s]+$/,
+    myFirstName:
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð -]+$/u,
+    myLastName:
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð -]+$/u,
+    myAddress:
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð\-0-9\s]+$/,
+    myCity:
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð '-]+$/u,
     myEmail:
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   };
@@ -55,7 +60,12 @@ myForm.addEventListener("submit", function (e) {
   }
 
   if (error > 0) {
-    alert("merci de corriger vos erreurs");
+    alert("Merci de corriger vos erreurs");
+    return;
+  }
+
+  if (localStorage.products.length < 30) {
+    alert("Aucun produit n'a été trouvé dans votre panier");
     return;
   }
 
@@ -73,8 +83,9 @@ myForm.addEventListener("submit", function (e) {
     email,
   };
 
-  alert(contact.firstName + ", votre commande est bien prise en compte");
   const products = JSON.parse(localStorage.products).map((a) => a.id);
+  alert(contact.firstName + ", votre commande est bien prise en compte");
+  console.log(products);
   const toSend = {
     contact,
     products,

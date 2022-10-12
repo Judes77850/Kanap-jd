@@ -93,14 +93,22 @@ function displayProduct(product) {
 
 function buildFinalList(allProducts) {
   const productsInCart = get("products");
-  const list = [];
-
-  productsInCart.forEach((item) => {
-    const productComplete = allProducts.find((a) => a._id === item.id);
-    const product = { ...productComplete };
-    product.qty = item.qty;
-    product.color = item.color;
-    list.push(product);
-  });
-  return list;
+  const message =
+    ' semble bien vide, jetez un œil a <a href="./index.html">nos produits ...</a>';
+  const elementTitle = document.getElementsByTagName("h1");
+  if (productsInCart === null) {
+    document.getElementsByTagName("h1")[0].innerHTML += message;
+  } else if (productsInCart.length === 0) {
+    document.getElementsByTagName("h1")[0].innerHTML += message;
+  } else {
+    const list = [];
+    productsInCart.forEach((item) => {
+      const productComplete = allProducts.find((a) => a._id === item.id);
+      const product = { ...productComplete };
+      product.qty = item.qty;
+      product.color = item.color;
+      list.push(product);
+    });
+    return list;
+  }
 }
