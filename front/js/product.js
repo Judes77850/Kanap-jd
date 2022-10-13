@@ -58,7 +58,6 @@ function listenForCartAddition(product) {
       console.log(item);
       products.push(item);
       localStorage.setItem("products", JSON.stringify(products));
-      //store("products", products);
       alert(product.name + " " + color + " a été ajouté a votre panier");
       return;
     }
