@@ -9,14 +9,15 @@ function get(key) {
   return null;
 }
 
+// permet d'ajouter au localStorage
 function store(key, value) {
   if (has(key)) {
     localStorage.setItem(key, JSON.stringify(value));
   }
 }
 
+// Formate les valeurs monétaires
 function money(value) {
-  // Create our number formatter.
   const formatter = new Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: "EUR",

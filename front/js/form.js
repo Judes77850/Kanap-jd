@@ -9,6 +9,7 @@ myForm.addEventListener("submit", function (e) {
   let myAddress = document.getElementById("address");
   let myCity = document.getElementById("city");
   let myEmail = document.getElementById("email");
+  // regexes fonctionnant pour les Noms / Prénoms internationaux
   const regexes = {
     myFirstName:
       /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð -]+$/u,
@@ -108,11 +109,13 @@ myForm.addEventListener("submit", function (e) {
       console.log(res);
     });
 
+  // Permet de cacher les erreurs
   function hideError(input) {
     const myError = input.nextElementSibling;
     myError.innerText = "";
     myError.style.color = "red";
   }
+  // Permet l'affichage des erreurs
   function showError(input, message) {
     const myError = input.nextElementSibling;
     myError.innerHTML = message;

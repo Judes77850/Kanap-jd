@@ -7,6 +7,7 @@ fetch("http://localhost:3000/api/products/" + id)
     listenForCartAddition(product);
   });
 
+// fonction permettant d'obtenir l'id d'un produit
 function getId() {
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
@@ -15,6 +16,7 @@ function getId() {
   return (value = params.id);
 }
 
+// fonction permettant d'afficher le détail d'un produit sur page product
 function displayProductDetails(product) {
   document.querySelector("#title").innerHTML += product.name;
   document.querySelector("#price").innerHTML += money(product.price);
@@ -27,6 +29,7 @@ function displayProductDetails(product) {
     .setAttribute("src", product.imageUrl);
 }
 
+// fonction permettant de paramettrer la quantité de produit a ajouter au panier
 function listenForCartAddition(product) {
   document.querySelector("#addToCart").addEventListener("click", () => {
     const color = document.querySelector("#colors").value;
@@ -42,7 +45,7 @@ function listenForCartAddition(product) {
     }
 
     if (!product.colors.includes(color)) {
-      alert("ouille");
+      alert("ouille cette couleur n'est pas reconnue");
       return;
     }
 

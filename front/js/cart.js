@@ -8,6 +8,7 @@ fetch("http://localhost:3000/api/products")
     listenForProductDelete();
   });
 
+// Permet la modification de la quantité depuis le panier
 function listenForProductQtyChange() {
   document.querySelectorAll(".itemQuantity").forEach((input) => {
     input.addEventListener("change", (event) => {
@@ -24,6 +25,7 @@ function listenForProductQtyChange() {
   });
 }
 
+// Permet de supprimer un produit du panier
 function listenForProductDelete() {
   document.querySelectorAll(".deleteItem").forEach((input) => {
     input.addEventListener("click", (event) => {
@@ -38,6 +40,7 @@ function listenForProductDelete() {
   });
 }
 
+// Permet le calcul des totaux
 function total(products) {
   let totalQty = 0;
   let totalPrice = 0;
@@ -63,6 +66,7 @@ function display(products) {
   document.querySelector("#cart__items").innerHTML = html;
 }
 
+// Affichage des produits du panier
 function displayProduct(product) {
   return `
           <article class="cart__item" data-id="${product._id}" data-color="${
@@ -91,6 +95,7 @@ function displayProduct(product) {
           </article>`;
 }
 
+// Permet de construire une liste des éléments du panier ainsi que l'affichage d'un msg error si panier vide
 function buildFinalList(allProducts) {
   const productsInCart = get("products");
   const message =
